@@ -6,6 +6,11 @@ interface Event {
     description: string;
 }
 
+interface AllEventsArgs {
+    name?: string;
+    id?: string;
+}
+
 const events: Event[] = [
   {
     name: "Junction 2020 hackathon",
@@ -22,6 +27,11 @@ const events: Event[] = [
     id: '3d599471-3436-11e9-bc57-8b80ba54c431',
     "description": "Täällä kuunnellaan vain hyvää musiikkia..."
   },
+  {
+    name: "Juhanan kotibileet",
+    id: '3d599471-3436-11e9-bc57-8b80na54c431',
+    "description": "Täällä kuunnellaan vain hyvää musiikkia..."
+  },
 ];
 
 const typeDefs = gql`
@@ -33,14 +43,18 @@ const typeDefs = gql`
 
   type Query {
     eventCount: Int!
-    allEvents: [Event!]!
+    allEvents(name: String, id: String): [Event!]!
   }
 `;
 
 const resolvers = {
   Query: {
     eventCount: () => events.length,
-    allEvents: () => events,
+    allEvents: (_root: unknown, args: AllEventsArgs) => {
+        if(args.name) return events.filter(e => e.name === args.name);
+        else if(args.id) return events.find(e => e.id === args.id);
+        else return events;
+    },
   }
 };
 

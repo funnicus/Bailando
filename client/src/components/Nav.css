@@ -1,0 +1,17 @@
+.Nav {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+.Nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+.Nav li {
+    margin-top: 20px;
+    margin-left: 20px;
+    float: left;
+}
