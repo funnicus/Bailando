@@ -1,12 +1,65 @@
-.Feed {
-    border: 1px solid black;
+.Feed { 
     margin: auto;
     margin-top: 3vh;
     width: 50vw;
 }
 
 .event-card {
-    border: 1px solid black;
+    border: 1px solid grey;
     text-decoration: none;
     color: #242424;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row-reverse;
+    height: 120px;
+    margin-bottom: 10px;
+    background-color: rgb(233, 230, 230);
+}
+
+.sidebar {
+    background-color: transparent;
+    width: 10%;
+    height: 100%;
+    border-radius: left 4px;
+    height: 100px;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-item button{
+    color: grey;
+}
+
+.sidebar button {
+    background-color: transparent;
+    border: none;
+}
+
+.sidebar #comment {
+    margin-top: 15px;
+}
+
+.sidebar #upvote:hover {
+    cursor: pointer;
+    color: red;
+}
+
+.sidebar #downvote:hover {
+    cursor: pointer;
+    color: blue;
+}
+
+.sidebar #comment:hover {
+    cursor: pointer;
+    color: green;
+}
+
+.card-content {
+    overflow: hidden;
+    background-color: #fff;
+    width: 90%;
+    padding: 10px;
+    border-radius: right 10px;
 }

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment, faArrowAltCircleDown, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 import "./Feed.css";
 
@@ -41,10 +43,26 @@ const Feed = () => {
     <div className="Feed">
         {events.map(e => {
             return (
-            <Link to="/events/id"><div className="event-card" key={e.id}>
-                <h3>{e.name}</h3>
-                <p>{e.description}</p>
-            </div></Link>
+            <div className="event-card" key={e.id}>
+                <div className="card-content">
+                    <article>
+                        <h3>{e.name}</h3>
+                        <p>{e.description}</p>
+                    </article>
+                </div>
+                <div className="sidebar">
+                    <div className="sidebar-item">
+                      <button id="upvote"><FontAwesomeIcon icon={faArrowAltCircleUp} /></button>
+                    </div>
+                    <div className="sidebar-item">18k</div>
+                    <div className="sidebar-item">
+                      <button id="downvote"><FontAwesomeIcon icon={faArrowAltCircleDown} /></button>
+                    </div>
+                    <div className="sidebar-item">
+                      <button id="comment"><FontAwesomeIcon icon={faComment} /></button>
+                    </div>
+                </div>
+            </div>
             )
         })}
     </div>
