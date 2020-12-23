@@ -1,6 +1,12 @@
 .Nav {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: white;
   }
   
 .Nav ul {
@@ -11,7 +17,19 @@
   }
   
 .Nav li {
-    margin-top: 20px;
     margin-left: 20px;
     float: left;
+}
+
+.Nav li a{
+  color: #242424;
+  text-decoration: none;
+}
+
+.Nav li a:hover {
+    color: grey;
+}
+
+#search-bar input {
+    margin-left: 10px;
 }

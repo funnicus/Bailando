@@ -1,0 +1,12 @@
+.Feed {
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 3vh;
+    width: 50vw;
+}
+
+.event-card {
+    border: 1px solid black;
+    text-decoration: none;
+    color: #242424;
+}
