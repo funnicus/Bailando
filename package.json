@@ -10,6 +10,10 @@
     "lint": "eslint --ext .ts .",
     "start": "node build/src/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funnicus/Bailando.git"
+  },
   "keywords": [
     "event",
     "social"
@@ -18,6 +22,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.9",
+    "@types/mongoose-unique-validator": "^1.0.4",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
     "eslint": "^7.16.0",
@@ -26,6 +31,10 @@
   },
   "dependencies": {
     "apollo-server": "^2.19.0",
-    "graphql": "^15.4.0"
+    "dotenv": "^8.2.0",
+    "graphql": "^15.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.8",
+    "mongoose-unique-validator": "^2.0.3"
   }
 }
