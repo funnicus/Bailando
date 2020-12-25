@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-interface userObject {
+export interface IUserDocument extends mongoose.Document {
     id?: string;
     _id?: string;
-    __v?: string;
+    __v?: number;
     username: string;
     passwordHash?: string;
 }
@@ -22,7 +22,7 @@ const schema = new mongoose.Schema({
 });
     
 schema.set('toJSON', {
-  transform: (_document: unknown, returnedObject: userObject) => {
+  transform: (_document: unknown, returnedObject: IUserDocument) => {
     if(returnedObject._id) returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
@@ -33,6 +33,6 @@ schema.set('toJSON', {
     
 schema.plugin(uniqueValidator);
     
-const User = mongoose.model('User', schema);
+const User = mongoose.model<IUserDocument>('User', schema);
     
-module.exports = User;
+export default User;

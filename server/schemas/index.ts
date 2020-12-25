@@ -1,15 +1,29 @@
-import { makeExecutableSchema } from 'apollo-server';
+import { makeExecutableSchema, UserInputError } from 'apollo-server';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+import User, { IUserDocument } from '../models/user';
 
 import { typeDef as EventDef} from './event';
 import { typeDef as Mutation } from './mutation';
 import { typeDef as Query } from './query';
-import { typeDef as User } from './user';
+import { typeDef as UserDef } from './user';
 
 import { events, Event } from '../../db';
 
 interface AllEventsArgs {
     name?: string;
     id?: string;
+}
+
+interface createUserArgs {
+    username: string;
+    password: string;
+}
+
+interface loginArgs {
+    username: string;
+    password: string;
 }
 
 const resolvers = {
@@ -22,37 +36,58 @@ const resolvers = {
         },
       },
     Mutation: {
-        createUser: (_root: unknown, _args: unknown): number => {
-          //const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
-    
-          /*return user.save()
-            .catch(error => {
-              throw new UserInputError(error.message, {
-                invalidArgs: args,
-              })
-            })*/
-            return 0;
-        },
-        //make async
-        login: (_root: unknown, _args: unknown): number => {
-          /*const user = await User.findOne({ username: args.username })
-    
-          if (!user || args.password !== 'secret') {
-            throw new UserInputError("wrong credentials")
+        createUser: async (_root: unknown, args: createUserArgs) => {
+
+          if(!args.username || !args.password || args.password.length < 4){
+            throw new Error("invalid user information");
           }
+
+          const saltRounds = 10;
+          let passwordHash: Promise<string> | string | null;
+          try {
+            passwordHash = await bcrypt.hash(args.password, saltRounds);
+          } catch(error) {
+            passwordHash = null;
+          }
+
+          if(!passwordHash) throw new Error("password hashing failed");
+
+          const userObj = { 
+            username: args.username, 
+            passwordHash,
+          };
+
+          const user = new User(userObj);
     
+          const savedUser = await user.save();
+
+          return savedUser.toJSON();
+        },
+        login: async (_root: unknown, args: loginArgs) => {
+
+          const user: IUserDocument | null = await User.findOne({ username: args.username });
+          if (!user) throw new UserInputError("user not found");
+          if(!user.passwordHash) throw new Error("password hash missing?");
+
+          const passwordCorrect = user === null
+            ? false
+            : await bcrypt.compare(args.password, user.passwordHash);
+    
+          if (!passwordCorrect) throw new UserInputError("wrong credentials");
+
           const userForToken = {
             username: user.username,
             id: user._id,
-          }
+          };
+
+          if(!process.env.JWT_SECRET) throw new Error("no jwt secret?");
     
-          return { value: jwt.sign(userForToken, JWT_SECRET) }*/
-          return 0;
+          return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
         }
       }
 };
 
 export default makeExecutableSchema({
-    typeDefs: [ Query, EventDef, Mutation, User],
+    typeDefs: [ Query, EventDef, Mutation, UserDef],
     resolvers,
 });
