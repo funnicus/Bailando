@@ -1,6 +1,6 @@
 import {  gql } from 'apollo-server';
 
-export const typeDefs = gql`
+export const typeDef = gql`
   type Event {
     name: String!
     id: String!
