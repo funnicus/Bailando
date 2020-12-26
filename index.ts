@@ -8,7 +8,9 @@ import User from './server/models/user';
 
 import schema from './server/schemas';
 
+//getting those deprication warnings away...
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 const MONGODB_URI = process.env.MONGODB_URI || "undefined";
 
@@ -27,21 +29,21 @@ interface TokenInterface {
   id: string;
 }
 
-//creation of a new grapgql server using apollo-server
+//creation of a new graphql server using apollo-server
 // the server is defined with a schema and a context
 const server = new ApolloServer({ 
   schema,
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null;
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      if(!process.env.JWT_SECRET) throw new Error("no secret value declared in .env");
+      if(!process.env.JWT_SECRET) throw new Error("no JWT_SECRET declared in .env");
       const decodedToken = jwt.verify(auth.substring(7), process.env.JWT_SECRET);
       console.log(decodedToken);
       const currentUser = await User.findById((decodedToken as TokenInterface).id);
       return { currentUser };
     }
-    //if no user is logged in, return undefined
-    return undefined;
+    //if no user is logged in, return currentUser as undefined
+    return { currentUser: undefined };
   },
 });
 

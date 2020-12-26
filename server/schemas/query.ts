@@ -5,5 +5,7 @@ export const typeDef = gql`
     _empty: String
     eventCount: Int!
     allEvents(name: String, id: String): [Event!]!
+    userCount: Int!
+    allUsers(name: String, id: String): [User!]!
   }
 `;

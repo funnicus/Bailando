@@ -1,14 +1,13 @@
 import { gql } from 'apollo-server';
 
 export const typeDef = gql`
-  type Event {
-    user: ID!
+  type Comment {
     name: String!
+    id: ID!
     summary: String!
     description: String!
-    comments: [Comment!]
+    comments: [String!]
     votes: Int!
-    date: String!
-    id: ID!
+    user: String!
   }
 `;
